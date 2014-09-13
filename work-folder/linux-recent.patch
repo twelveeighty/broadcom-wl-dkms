@@ -35,3 +35,16 @@
  	.name =		"wl",
  	.probe =	wl_pci_probe,
  	.remove =	__devexit_p(wl_remove),
+@@ -1307,7 +1307,11 @@
+ 	dev->priv = priv_link;
+ #else
+
+-	dev = alloc_netdev(sizeof(priv_link_t), intf_name, ether_setup);
++	dev = alloc_netdev(sizeof(priv_link_t), intf_name,
++  #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)
++      NET_NAME_UNKNOWN,
++  #endif
++      ether_setup);
+ 	if (!dev) {
+ 		WL_ERROR(("wl%d: %s: alloc_netdev failed\n",
+ 			(wl->pub)?wl->pub->unit:wlif->subunit, __FUNCTION__));
